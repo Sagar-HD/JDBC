@@ -15,7 +15,7 @@ public class RowDataDaoImpl implements RowDataDao {
        if(rows!=null){
 
                Connection con = DbUtil.getConnection();
-               String insertQuery="insert into sheet ('software_name','version','developed_by','year','open_source') values (?,?,?,?,?)";
+               String insertQuery="insert into sheet (software_name,version,developed_by,year,open_source) values (?,?,?,?,?)";
            PreparedStatement ps=con.prepareStatement(insertQuery);
            for(RowDto row:rows){
                ps.setString(1,row.getSoftwareName());
@@ -27,6 +27,9 @@ public class RowDataDaoImpl implements RowDataDao {
 
            }
          int[] results=ps.executeBatch();
+
+           DbUtil.closeResources(con,ps,null);
+
           int numberOfRowsInserted=0;
           for(int i:results){
               numberOfRowsInserted+=i;
